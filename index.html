@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获奖证明</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: #555;
+            font-size: 1.05rem;
+        }
+        
+        .awards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .award-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .award-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .award-imageaward {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .award-imageP {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .award-imageSR {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .award-content {
+            padding: 25px;
+        }
+        
+        .award-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        .award-description {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .award-date {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            padding: 4px 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7f8c8d;
+            border-top: 1px solid #eaeaea;
+            margin-top: 20px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .awards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .award-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>所获奖项</h1>
+        <p class="subtitle">以下是我在专业领域获得的奖项与证书</p>
+    </header>
+    
+    <main class="awards-container">
+        <!-- 奖项1 -->
+        <article class="award-item">
+            <img src="Award.png" 
+                 class="award-imageaward">
+            <div class="award-content">
+                <h2 class="award-title">广东省电信规划设计院有限公司</h2>
+                <h2 class="award-title">2024年度优秀员工奖</h2>
+                <p class="award-description">因在项目工作中表现突出，成绩优异，获得公司年度优秀员工荣誉。</p>
+                <span class="award-date">2025年1月</span>
+            </div>
+        </article>
+        
+        <!-- 奖项2 -->
+        <article class="award-item">
+            <img src="EP.png" 
+                 class="award-imageP">
+            <div class="award-content">
+                <h2 class="award-title">一种电磁波传输与反射虚拟显示系统</h2>
+                <h2 class="award-title">发明专利202410083069.9</h2>
+                <p class="award-description">为研究与演示电磁波传播特性，在Unity平台中设计并实现了一个关于电磁波传输的虚拟实验系统。</p>
+                <span class="award-date">2024年4月</span>
+            </div>
+        </article>
+        
+        <!-- 奖项3 -->
+        <article class="award-item">
+            <img src="RFIDP.png" 
+                 class="award-imageP">
+            <div class="award-content">
+                <h2 class="award-title">一种基于RFID标签天线的设备管理系统</h2>
+                <h2 class="award-title">发明专利202310666778.5</h2>
+                <p class="award-description">基于商用UHF读写器模块，设计并实现了一套基于PC的UHF RFID硬件控制系统，成功实现了实验室设备资产的数字化管理。</p>
+                <span class="award-date">2023年11月</span>
+            </div>
+        </article>
+        
+        <!-- 奖项4 -->
+        <article class="award-item">
+            <img src="RFIDSR.png" 
+                 class="award-imageSR">
+            <div class="award-content">
+                <h2 class="award-title">基于RFID标签天线的设备管理系统</h2>
+                <h2 class="award-title">软件著作权2023SR0673533</h2>
+                <p class="award-description">基于商用UHF读写器模块，设计并实现了一套基于PC的UHF RFID硬件控制系统，成功实现了实验室设备资产的数字化管理。</p>
+                <span class="award-date">2023年1月</span>
+            </div>
+        </article>
+        
+    </main>
+    
+</body>
+</html>

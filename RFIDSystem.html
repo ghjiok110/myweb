@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>基于RFID标签天线的设备管理系统介绍</title>
+    <style>
+        /* 极简重置 + 垂直流布局 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f2f4f8;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1rem;
+            color: #1e293b;
+        }
+
+        /* 主容器：居中，白色背景，柔和阴影 */
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 页眉 */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e9eef3;
+            padding-bottom: 1.2rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e293b, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .header p {
+            color: #475569;
+            margin-top: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        /* 垂直图片列表 — 关键：从上到下，没有左右排列 */
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin: 1.8rem 0;
+        }
+
+        /* 每一个图卡片 —— 完全块级，垂直堆叠 */
+        .image-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .image-card:hover {
+            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 图片容器：居中展示 */
+        .img-wrapper {
+            background: #fafcff;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .img-wrapper img {
+            max-width: 100%;
+            height: auto;
+            max-height: 420px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 0.75rem;
+            display: block;
+        }
+
+        /* 图片说明区域 */
+        .caption {
+            padding: 1rem 1.2rem;
+            background: #fefefe;
+        }
+
+        .caption h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #0f172a;
+        }
+
+        .caption p {
+            font-size: 0.85rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        /* 提示区域，便于用户替换图片链接 */
+        .info-tip {
+            margin-top: 2rem;
+            padding: 0.9rem 1.2rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        .info-tip code {
+            background: #eef2ff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.5rem;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            border-top: 1px solid #eef2ff;
+            padding-top: 1.2rem;
+        }
+
+        .code-section pre {
+            background-color: #282c34;  /* Atom One Dark 风格 */
+            color: #abb2bf;             /* 文字颜色也要调整 */
+            padding: 1.2rem;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        /* 无任何浮动、grid或水平flex-row，保证纯垂直 */
+        @media (max-width: 640px) {
+            .page {
+                padding: 1.2rem;
+            }
+            .img-wrapper {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <h1>📐 基于RFID标签天线的设备管理系统</h1>
+    </div>
+
+    <!-- 垂直图片区域：每一张图片都是一块独立卡片，从上往下排列 -->
+    <div class="gallery">
+        <!-- 图片卡片 1：系统整体架构图 -->
+        <div class="image-card">
+            <div class="img-wrapper">
+                <!-- 请将 src 替换为你自己的架构图 URL 或本地图片路径 -->
+                <img src="RFIDStructure.png" 
+                     alt="系统整体架构图"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🏗️ 整体架构总览图(Ctrl+鼠标滚轮可放大)</h3>
+                <p>展示模块划分、数据流向与核心服务</p>
+            </div>
+        </div>
+
+        <!-- 图片卡片 2：服务模块详细设计 -->
+        <div class="image-card">
+            <div class="img-wrapper">
+                <img src="RFIDmachimg.png"
+                     alt="微服务通信架构"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🔁 PC端硬件上位机使用流程图</h3>
+                <p>使用上位机写入标签操作流程</p>
+            </div>
+        </div>
+
+        <!-- 图片卡片 3：部署或组件结构图 (可自行增删) -->
+        <div class="image-card">
+            <div class="img-wrapper">
+                <img src="bluetoothmachimg.png"
+                     alt="容器部署架构"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🐳 标签数据管理系统使用流程图</h3>
+                <p>使用APP读取标签并访问服务器流程</p>
+            </div>
+        </div>
+
+        <div class="image-card">
+            <div class="img-wrapper">
+                <img src="equipmentsys.png"
+                     alt="容器部署架构"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🐳 WEB后端服务使用流程图</h3>
+                <p>管理员管理对象信息操作流程</p>
+            </div>
+        </div>
+
+        <div class="image-card">
+            <div class="img-wrapper">
+                <img src="pic1.png"
+                     alt="容器部署架构"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🐳 PC端硬件上位机部分效果图展示</h3>
+            </div>
+        </div>
+
+        <div class="image-card">
+            <div class="img-wrapper">
+                <img src="pic2.png"
+                     alt="容器部署架构"
+                     loading="lazy">
+            </div>
+            <div class="caption">
+                <h3>🐳 WEB后端服务部分效果图展示</h3>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <!-- <div class="img-wrapper">
+                <img src="portcodeseg.png"
+                     alt="容器部署架构"
+                     loading="lazy">
+            </div> -->
+            <pre>
+                <code>
+package PortProcess;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import DataProcess.TagAntennaCommand;
+import DataProcess.DataAuxiliaryTool;
+import DataProcess.DataInterface;
+import GUI.UIQuoteTool;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+
+/**
+ * 此类用于对端口进行各类操作和其中的数据处理
+ * @author ydw
+ *
+ */
+public class PortConnection
+{
+	private List<String> portlist=PortDataInterface.portdata_quote.getportlist();
+	private SerialPort comport=PortDataInterface.portdata_quote.getPort();
+	
+	//public static PortConnection instance=new PortConnection();
+	/**
+	 * 此函数用于检测当前是否存在可以使用的端口，若存在则把检测到的端口加入到portlist中
+	 */
+	@SuppressWarnings("unchecked")
+	public static void get_available_port()
+	{
+		Enumeration<CommPortIdentifier> portlists=CommPortIdentifier.getPortIdentifiers();
+		List<String> portname=new ArrayList<String>();
+		while(portlists.hasMoreElements())
+		{
+			String port=portlists.nextElement().getName();
+			portname.add(port);
+		}
+		PortDataInterface.portdata_quote.setportlist(portname);
+	}
+	/**
+	 * 此函数用于对端口进行数据的初始化，即设置波特率，停止位、数据传送位数、奇偶校验位。默认设置为
+	 * 停止位为1，数据位数为8，无奇偶校验，波特率为传入的参数，传入相应的字符串就可自动得到其整型
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public void set_port_attribute() throws Exception
+	{
+		if(PortDataInterface.portdata_quote.getPort()!=null)
+		{
+			if(DataInterface.instance.getlist_choosebox("portconnectPane_box").get(1).getSelectedItem()==null)
+				PortDataInterface.portdata_quote.getPort().setSerialPortParams(Integer.parseInt("115200"),
+				SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+			else 
+				PortDataInterface.portdata_quote.getPort().setSerialPortParams
+				(Integer.parseInt(DataInterface.instance.getlist_choosebox("portconnectPane_box").get(1).getSelectedItem().toString()),
+				SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+			
+			UIQuoteTool.set_message_pane(0, "端口初始化成功！");
+		}
+	}
+	/**
+	 * 此函数用于在端口存在时，与端口进行连接，连接成功时则弹出提示框
+	 * @throws Exception
+	 */
+	public void openport() throws Exception
+	{
+		if(!PortDataInterface.portdata_quote.getportlist().isEmpty() && comport==null)
+		{
+			CommPortIdentifier com=CommPortIdentifier.getPortIdentifier
+			(PortDataInterface.portdata_quote.getportlist().get(0));
+			PortDataInterface.portdata_quote.setport((SerialPort)com.open("OpenerAndCloser", 1000));
+			PortDataInterface.portdata_quote.getPort().addEventListener(new PortEventResponse());
+			PortDataInterface.portdata_quote.getPort().notifyOnDataAvailable(true);
+			PortDataInterface.portdata_quote.getPort().notifyOnBreakInterrupt(true);
+		}
+		else 
+			UIQuoteTool.set_message_pane(2, "没有检测到可用端口！");
+	}
+	/**
+	 * 此函数用于断开与端口之间的通信，若检测不到端口则弹出错误提示框，关闭端口成功后移除可用
+	 * 端口下拉框和波特率设置下拉框中所有的内容，并弹出提示框
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public void closeport() throws Exception
+	{
+		if(PortDataInterface.portdata_quote.getPort()!=null)
+		{
+			PortDataInterface.portdata_quote.getPort().close();
+			PortDataInterface.portdata_quote.setport(null);
+			PortDataInterface.portdata_quote.getportlist().clear();
+			DataInterface.instance.getlist_choosebox("portconnectPane_box").
+			get(0).removeAllItems();
+		}
+		UIQuoteTool.set_message_pane(0, "端口已关闭！");
+	}
+	/**
+	 * 此函数用于向端口发送数据，并将传进的字符串参数转换成16进制数后再发送，使用了缓冲流
+	 * 修饰，发送完毕后关闭发送流
+	 * @param str 想要发送的字符串信息
+	 * @throws Exception
+	 */
+	public void port_sendmessage(String str) throws Exception
+	{
+		DataInterface.instance.setmessage("send_message",str);
+		new UIQuoteTool().set_table_operation
+		("add", DataInterface.instance.getlist_table().get(3),DataInterface.tablemaxcount);
+		new DataAuxiliaryTool().set_showmessagepane_data(DataInterface.tablemaxcount);
+		if(PortDataInterface.portdata_quote.getPort()!=null)
+		{
+			OutputStream ops=new BufferedOutputStream(PortDataInterface.portdata_quote.getPort().getOutputStream());
+			byte[] bytes=DataAuxiliaryTool.hexstring_to_bytes(str);
+			ops.write(bytes);
+			ops.flush();
+			ops.close();
+			DataInterface.instance.getcombobox().get(2).setSelected(true);
+		}
+	}
+	/**
+	 * 此函数用于接收端口所发送回来的数据，不可用输入缓冲流来修饰，否则会卡死并抛出异常，
+	 * 接收完毕后会关闭输入流并得到一个字节数组
+	 * @return 返回一个byte[]对象
+	 * @throws Exception
+	 */
+	public byte[] port_receivemessage() throws Exception
+	{
+		byte[] bytes= null;
+		if(PortDataInterface.portdata_quote.getPort()!=null)
+		{
+			InputStream in=PortDataInterface.portdata_quote.getPort().getInputStream();
+			int buffernum=in.available();
+			while(buffernum>0)
+			{
+				bytes=new byte[buffernum];
+				in.read(bytes);
+				buffernum=in.available();
+			}
+			in.close();	
+		}
+		return bytes;
+	}
+	public void sendrevmes(int mode)
+	{
+		if(comport!=null)
+		{
+			try
+			{
+				port_sendmessage(new TagAntennaCommand().get_userarea_mand(mode));
+			}
+			catch (Exception e){e.printStackTrace();}
+		}
+		else
+		{
+			try {
+				get_available_port();
+				openport();
+				set_port_attribute();
+				port_sendmessage(new TagAntennaCommand().get_userarea_mand(mode));
+			}
+			catch (Exception ea){ea.printStackTrace();}
+
+		}
+	}
+
+}
+                </code>
+            </pre>
+            <div class="caption">
+                <h3>🐳 串口通信部分代码片段</h3>
+                <p>包含用于初始化串口参数，发送和接收串口消息的函数</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
